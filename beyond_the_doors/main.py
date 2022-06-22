@@ -5,7 +5,7 @@ from starting_screen import *
 from run_room import *
 from ennemy import *
 from player_class import *
-
+import pdb
 
 class Game():
 	def __init__(self,screen):
@@ -33,7 +33,7 @@ class Game():
 		self.player.weapon_equipped[0] = self.weapon[0]
 
 		self.monster_spawned = []
-		
+		self.position_x_list = [250, 350, 500]
 
 	def handling_evenement(self):
 
@@ -73,14 +73,14 @@ class Game():
 						if self.number_of_monster_done:
 
 							
-							for attack in self.monster_spawned:
+							for attack in range(0, len(self.monster_spawned)):
 								print("number of kill:", self.number_of_monster_kill, "/", self.number_of_monster)
-								print(f"pos X{attack - 1}: {self.monster_spawned[attack - 1].position_x}    pos Y{attack - 1}: {self.monster_spawned[attack - 1].position_y}")
-								if self.monster_spawned[attack - 1].on_it and self.monster_spawned[attack].dead == False:
-									self.monster_spawned[attack - 1].on_it.clicked = True
-									self.monster_spawned[attack - 1].for_one_attack = 1
+								print(f"pos X{attack}: {self.monster_spawned[attack].position_x}    pos Y{attack}: {self.monster_spawned[attack].position_y}")
+								if self.monster_spawned[attack].on_it and self.monster_spawned[attack].dead == False:
+									self.monster_spawned[attack].clicked = True
+									self.monster_spawned[attack].for_one_attack = 1
 								else:
-									self.monster_spawned[attack - 1].on_it.clicked = False
+									self.monster_spawned[attack].clicked = False
 
 
 						
@@ -115,12 +115,10 @@ class Game():
 				self.number_of_monster_kill = 0
 				
 				self.monster_spawned.clear() 
-				for monster in range(1, self.number_of_monster):
-					self.monster_spawned.append("not finished")
-					self.monster_spawned[monster - 1] = self.monster_list[random.randint(0, 1)]
-					self.monster_spawned[monster - 1].Reposition(200, 200, screen)                              #to put the image at the correct place
-					self.monster_spawned[monster - 1].dead = False
-					self.monster_spawned[monster - 1].hp = self.monster_spawned[monster - 1].normal_hp
+				for monster in range(0, self.number_of_monster):
+					self.monster_spawned.append(self.monster_list[random.randint(0, 1)])
+					self.monster_spawned[monster].Reposition(self.position_x_list[monster], 200)                              #to put the image at the correct place
+					
 					
 
 				
@@ -144,17 +142,17 @@ class Game():
 
 
 					
-				for number_of_monster_here in self.monster_spawned:
-					self.monster_spawned[number_of_monster_here - 1].Is_mouse_on_an_ennemy()
-					if self.monster_spawned[number_of_monster_here - 1].clicked and self.monster_spawned[number_of_monster_here - 1].for_one_attack and self.player.weapon_equipped[0].clicked:
-						self.player.Attack(self.monster_spawned[number_of_monster_here - 1])
+				for number_of_monster_here in range(0, len(self.monster_spawned)):
+					self.monster_spawned[number_of_monster_here].Is_mouse_on_an_ennemy()
+					if self.monster_spawned[number_of_monster_here].clicked and self.monster_spawned[number_of_monster_here].for_one_attack and self.player.weapon_equipped[0].clicked:
+						self.player.Attack(self.monster_spawned[number_of_monster_here ])
 						self.player.weapon_equipped[0].clicked = False
-						self.monster_spawned[number_of_monster_here - 1].clicked = False
-						self.monster_spawned[number_of_monster_here - 1].on_it = False
-						self.monster_spawned[number_of_monster_here - 1].for_one_attack = 0
-						if self.monster_spawned[number_of_monster_here - 1].hp <= 0 :
+						self.monster_spawned[number_of_monster_here].clicked = False
+						self.monster_spawned[number_of_monster_here].on_it = False
+						self.monster_spawned[number_of_monster_here].for_one_attack = 0
+						if self.monster_spawned[number_of_monster_here].hp <= 0 :
 							self.number_of_monster_kill += 1
-							self.monster_spawned[number_of_monster_here - 1].dead = True
+							self.monster_spawned[number_of_monster_here].dead = True
 
 
 				
@@ -185,10 +183,10 @@ class Game():
 				self.player.weapon_equipped[0].Draw(screen)
 
 				
-				for draw in self.monster_spawned:
-					print(draw - 1)
-					if self.monster_spawned[draw - 1].dead == False:
-						self.monster_spawned[draw - 1].Draw(screen)
+				for draw in range(0, len(self.monster_spawned)):
+					
+					if self.monster_spawned[draw].dead == False:
+						self.monster_spawned[draw].Draw(screen)
 
 				
 						

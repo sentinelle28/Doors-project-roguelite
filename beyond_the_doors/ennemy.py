@@ -7,6 +7,10 @@ class Enemy():
 		
 		self.hp = hp_max
 		self.normal_hp = hp_max
+		self.min_damage = min_damage
+		self.max_damage = max_damage
+		self.my_precision = my_precision
+		self.self_damage = self_damage
 		self.on_it = False
 		self.dead = False
 		self.position_y = position_y
@@ -28,14 +32,14 @@ class Enemy():
 		screen.blit(self.image, self.rect)
 		
 	def Attack(self, hp_player):
-		if random.randint(1,my_precision) == 1:
-			hp_player.hp -= random.randint(min_damage, max_damage)
+		if random.randint(1, self.my_precision) == 1:
+			hp_player.hp -= random.randint(self.min_damage, self.max_damage)
 		else:
-			if self_damage:
-				self.hp -= random.randint(min_damage, max_damage)
+			if self.self_damage:
+				self.hp -= random.randint(self.min_damage, self.max_damage)
 			pass
 
-	def Reposition(self, X, Y, screen):
+	def Reposition(self, X, Y):
 		self.position_x = X
 		self.position_y = Y
 
@@ -44,7 +48,7 @@ class Enemy():
 		self.base_rect = self.base_image.get_rect(topleft = [self.position_x, self.position_y])
 		self.image = self.base_image
 		self.rect = self.base_rect
-		screen.blit(self.image, self.rect)
+		
 	
 
 
